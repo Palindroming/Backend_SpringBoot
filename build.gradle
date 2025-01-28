@@ -19,8 +19,12 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web' // Correct
-    implementation 'org.projectlombok:lombok' // Correct Lombok dependency
-    annotationProcessor 'org.projectlombok:lombok' // Required for annotation processing
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.36'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.36'
+
     implementation 'org.apache.groovy:groovy' // Correct
     testImplementation 'org.springframework.boot:spring-boot-starter-test' // Correct
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher' // Correct

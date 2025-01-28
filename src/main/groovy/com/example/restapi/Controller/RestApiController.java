@@ -1,14 +1,18 @@
 package com.example.restapi.Controller;
 
 import com.example.restapi.model.bookqueryparam;
+import groovy.util.logging.Slf4j;
+
 import org.springframework.web.bind.annotation.*;
 
 
 
-
+@lombok.extern.slf4j.Slf4j
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class RestApiController {
+
 
     @GetMapping(path = "/hello")
     public String hello() {
@@ -77,4 +81,11 @@ public class RestApiController {
 
     //TODO Parameter 2가지 int 형태로 받아서 두 수의 덧셈, 곱셈
     //TODO String 타입,
+
+    @DeleteMapping(path = {"/user/{userName}/delete", "/user/{userName}/del"})
+    public void delete(@PathVariable("userName") String userName) {
+        log.info("User Name: {}", userName);
+    }
+
+
 }
