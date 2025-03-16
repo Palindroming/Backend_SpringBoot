@@ -1,0 +1,108 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Home - My Website</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+    <body>
+
+    <div th:replace="~{fragments/header :: header}"></div>
+    <div class="container my-5">
+        <div class="card">
+            <div class="card-header">
+                <h2>상세보기</h2>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-8">
+                        <h3 th:text="${book.subject}"></h3>
+                        <h6 th:text="${book.author}"></h6>
+                        <p>
+                            Price: <span th:text="${book.price}"></span><br>
+                            Page: <span th:text="${book.pages}"></span><br>
+                            CreatedAt: <span th:text="${book.createdAt}"></span>
+                        </p>
+                        <p>추가적인 설명을 출력하세요.....</p>
+                    </div>
+                    <div class="col-4">
+                        <img th:src="@{/images/book.jpg}" class="img-fluid" alt="Book Image">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>리뷰목록</h2>
+                <span class="badge bg-secondary">
+                    <span th:text="${#lists.size(book.reviews)}"></span>개,
+                    평점:<span th:text ="${averageRating}">?</span>/5
+                </span>
+            </div>
+            <div class="card-body">
+                <div th:if = "${message}" class = "alert alert-success" role = "alert">
+                    <span th:text = "${message}"></span>
+                </div>
+
+                <div th:if="${book.reviews != null and #lists.size(book.reviews) > 0}">
+                    <div class="list-group">
+                        <div class="list-group-item" th:each="review : ${book.reviews}">
+                            <p th:text="${review.content}" class="mb-1">리뷰 내용</p>
+                            <small th:text="${review.createdAt}" class="text-muted">작성일자</small>
+                            <p><small>평점: <span th:text="${review.rating}"></span>/5</small></p>
+
+                            <!--delete button -->
+                            <form th:action = "@{/deleteReview}" method = "post" style = "display:inline">
+                                <input type = "hidden" name = "review_id" th:value = "${review.id}">
+                                <input type = "hidden" name = "book_id" th:value = "${review.book.id}">
+
+                                <button type=  "submit" class = "btn btn-danger btn-sm">삭제</button>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                <div th:if="${book.reviews == null or #lists.size(book.reviews) == 0}">
+                    <p>작성된 리뷰가 없습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>리뷰 및 평점 쓰기</h2>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/register}" method="post">
+                    <input type = "hidden" name = "book_id" th:value = "${book.id}">
+                    <div class="form-group">
+                        <label for="content">리뷰내용</label>
+                        <textarea class="form-control" id="content" name = "content" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="rating">평점</label>
+                        <select class="form-control" id="rating" name="rating" required>
+                            <option value="1">1-Poor</option>
+                            <option value="2">2-Fair</option>
+                            <option value="3">3-Good</option>
+                            <option value="4">4-Very Good</option>
+                            <option value="5">5-Excellent</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-sm">리뷰등록</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="text-end mt-5">
+            <a href="/home" class="btn btn-primary btn-sm">리스트로...</a>
+        </div>
+    </div>
+
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    </body>
+    </html>
